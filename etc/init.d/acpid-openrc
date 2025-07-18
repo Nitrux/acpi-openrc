@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+# Copyright (c) 2007-2021 The Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Starts the Advanced Configuration and Power Interface daemon"
+command="/usr/sbin/acpid"
+command_args="${ACPI_OPTS}"
+pidfile="/run/acpid.pid"
+
+depend() {
+	# acpid needs udev to be running to get events.
+	need udev
+	# It should start after the kernel modules service.
+	after modules
+}
+
+start_pre() {
+	# This logic is preserved from the original script to load ACPI modules.
+	# The modules to load are configured in /etc/conf.d/acpid.
+	if [ -n "${ACPI_MODULES}" ]; then
+		ebegin "Loading required ACPI modules"
+		modprobe -a "${ACPI_MODULES}"
+		eend $?
+	fi
+}
+
+reload() {
+	ebegin "Reloading acpid configuration"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+	eend $?
+}

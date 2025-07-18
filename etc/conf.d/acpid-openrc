@@ -1,0 +1,12 @@
+# /etc/conf.d/acpid
+
+# Extra options to pass to the acpid daemon.
+# See 'man acpid' for details.
+#
+# ACPI_OPTS=""
+
+# Extra kernel modules to load before starting acpid.
+# For example:
+# ACPI_MODULES="video button"
+#
+ACPI_MODULES=""

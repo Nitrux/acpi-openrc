@@ -1,0 +1,59 @@
+#!/sbin/openrc-run
+# Copyright (c) 2007-2021 The Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Applies ACPI power management settings"
+ACPI_FUNCTIONS="/usr/share/acpi-support/power-funcs"
+
+depend() {
+	# These settings should be applied late in the boot process.
+	after local
+	# Needs the ACPI daemon to be running to get power status.
+	use acpid
+}
+
+start_pre() {
+	if [ ! -f "${ACPI_FUNCTIONS}" ]; then
+		eerror "ACPI support functions not found at ${ACPI_FUNCTIONS}"
+		return 1
+	fi
+	# shellcheck source=/dev/null
+	. "${ACPI_FUNCTIONS}"
+}
+
+start() {
+	ebegin "Applying ACPI power management settings"
+
+	# Check if we are on battery power.
+	if on_ac_power; then
+		einfo "On AC power, no changes needed."
+	else
+		einfo "On battery power, applying power saving settings."
+		/etc/acpi/power.sh true
+	fi
+
+	# Source all startup scripts.
+	if [ -d /etc/acpi/start.d ]; then
+		for SCRIPT in /etc/acpi/start.d/*.sh; do
+			[ -f "${SCRIPT}" ] && . "${SCRIPT}"
+		done
+	fi
+
+	eend 0
+}
+
+stop() {
+	# This action runs at shutdown.
+	# It's good practice to check for the functions file again.
+	if [ ! -f "${ACPI_FUNCTIONS}" ]; then
+		return 0
+	fi
+	# shellcheck source=/dev/null
+	. "${ACPI_FUNCTIONS}"
+
+	ebegin "Restoring ACPI power settings"
+	if ! on_ac_power; then
+		/etc/acpi/power.sh false
+	fi
+	eend 0
+}

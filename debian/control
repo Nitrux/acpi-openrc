@@ -1,4 +1,4 @@
-Source: acpid-support-openrc
+Source: acpi-openrc
 Section: misc
 Priority: important
 Maintainer: Uri Herrera <uri_herrera@nxos.org>
@@ -7,11 +7,11 @@ Standards-Version: 3.9.6
 Homepage: http://nxos.org
 
 
-Package: acpid-support-openrc
+Package: acpi-openrc
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, openrc, acpid-support
+Depends: ${shlibs:Depends}, ${misc:Depends}, openrc, acpi-support, acpid
 Conflicts: systemd, systemd-sysv
-Description: Package to add acpid-support configuration for OpenRC.
- This package will add the boot scripts to use acpid-support
+Description: Package to add acpi configuration for OpenRC.
+ This package will add the boot scripts to use acpi
  with OpenRC in Nitrux.
 
