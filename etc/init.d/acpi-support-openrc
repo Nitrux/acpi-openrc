@@ -9,7 +9,7 @@ depend() {
 	# These settings should be applied late in the boot process.
 	after local
 	# Needs the ACPI daemon to be running to get power status.
-	use acpid-openrc
+	need acpid
 }
 
 start_pre() {

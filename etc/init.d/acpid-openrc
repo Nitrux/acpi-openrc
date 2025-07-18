@@ -12,6 +12,7 @@ depend() {
 	need udev
 	# It should start after the kernel modules service.
 	after modules
+	provide acpid
 }
 
 start_pre() {
