@@ -9,4 +9,4 @@
 # For example:
 # ACPI_MODULES="video button"
 #
-ACPI_MODULES=""
+# ACPI_MODULES=""
