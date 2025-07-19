@@ -4,9 +4,7 @@ description="Applies ACPI power management settings"
 ACPI_FUNCTIONS="/usr/share/acpi-support/power-funcs"
 
 depend() {
-	# These settings should be applied late in the boot process.
 	after local
-	# Needs the ACPI daemon to be running to get power status.
 	need acpid
 }
 
@@ -22,7 +20,6 @@ start_pre() {
 start() {
 	ebegin "Applying ACPI power management settings"
 
-	# Check if we are on battery power.
 	if on_ac_power; then
 		einfo "On AC power, no changes needed."
 	else
@@ -41,8 +38,6 @@ start() {
 }
 
 stop() {
-	# This action runs at shutdown.
-	# It's good practice to check for the functions file again.
 	if [ ! -f "${ACPI_FUNCTIONS}" ]; then
 		return 0
 	fi

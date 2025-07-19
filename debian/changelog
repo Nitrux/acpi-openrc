@@ -1,3 +1,10 @@
+acpi-openrc (0.0.4)  nitrux; urgency=medium
+
+  * Use supervise-daemon for daemons.
+  * Cleanup one-shot.
+
+ -- Uri Herrera <uri_herrera@nxos.org>  Sat, 19 Jul 2025 02:31:00 -0500
+
 acpi-openrc (0.0.3)  nitrux; urgency=medium
 
   * Fix provides.
